@@ -1,0 +1,68 @@
+JavaScript函数定义
+JS中的方法和java中的方法定义不太一样 js中一般称其为函数 我们来看看定义一个函数的格式是什么:
+                function f() {
+                    console.info("有一个人前来卖瓜");
+                }
+定义一个函数 需要在前面加上function关键字表示一个函数 后面跟上函数名称和() 其中可以包含参数 在{}中编写函数代码 我们只需要直接使用函数名加()就能调用函数:
+                f();
+
+我们接着来看一下 如何给函数添加形式参数以及返回值:
+                function f(a) {
+                    console.info();
+                    return 888;
+                }
+
+                f("aa");
+由于js是动态类型 因此我们不必指明参数a的类型 同时也不必指明返回值的类型 一个函数可能返回不同类型的结果 因此直接编写return语句即可
+同理 我们可以在调用函数时 不传参 那么默认会使用undefined:
+                function f(a) {
+                    console.info("得到的实参为: " + a);
+                    return 888;
+                }
+
+                f();
+那么如果我们希望不传参的时候使用我们自定义的默认值呢? 我们可以直接在形参后面指定默认值:
+                function f(a ="88888") {
+                    console.info("得到的实参为: " + a);
+                    return 666;
+                }
+
+                f();
+
+函数本身也是一种类型 也可以被变量接收 所有函数类型的变量也可以直接被调用:
+                function f(a = "88888") {
+                    console.info("得到的实参为: " + a);
+                    return 888;
+                }
+
+                let k = f;
+                k();
+我们也可以直接将匿名函数赋值给变量:
+                let f = function () {
+                    console.info("我是测试消息");
+                }
+
+                f()
+既然函数是一种类型 那么函数也能作为一个参数进行传递:
+                function f(test) {
+                    test();
+                }
+
+                f(function () {
+                    console.info("这是一个匿名函数")
+                })
+
+对于所有的匿名函数 可以像java的匿名接口实现一样编写lambda表达式:
+                function f(test) {
+                    test();
+                }
+                f(() => {
+                    console.info("可以 不跟你多bb")
+                })
+
+                function f(test) {
+                    test("这个是回调参数")
+                }
+                f(param => {
+                    console.info("接收到回调参数: " + param)
+                })

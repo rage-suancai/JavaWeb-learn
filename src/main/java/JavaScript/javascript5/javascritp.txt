@@ -1,0 +1,52 @@
+JavaScript事件
+当我们点击一个页面中的按钮之后 我们希望之后能够进行登录操作 或是执行一些js代码来实现某些功能 那么这个时候 就需要用到事件
+
+事件相当于一个通知 我们可以提前设定好事件发生时需要执行的内容 当事件发生时 就会执行我们预先设定好的js代码
+
+事件有很多种类型 其中常用的有:
+    > onclick 点击事件
+    > oninput 内容输入事件
+    > onsubmit 内容提交事件
+
+那么如何为事件添加一个动作呢:
+                <input type="password" oninput="console.info('正在输入文本')">
+我们可以直接为一个元素添加对应事件的属性 比如oninput事件 我们可以直接在事件的值中编写js代码 但是注意 只能使用单引号 因为双引号用于囊括整个值
+
+我们可以单独编写一个函数 当事件发生时直接调用我们的函数:
+                function f() {
+                    window.alert("你输入了一个字符")
+                }
+
+                <input type="password" oninput="f()">
+仅仅了解了事件还不足以实现高度自定义 我们接着来看DOM
+
+Document对象
+当网页被加载时 浏览器会创建页面的文档对象模型(Document Object "M"odel) 它将整个页面的所有元素全部映射为js对象 这样我们就可以在js中操控页面中的元素
+
+比如我现在想要读取页面中某个输入框中的内容 那么我们就需要从DOM中获取此输入框元素的对象:
+                document.getElementById("pwd").value
+通过document对象就能够快速获取当前页面中对应的元素 并且我们也可以快速获取元素中的一些属性
+
+比如现在我们可以结合事件 来进行密码长度的校验 密码长度小于6则不合法 不合法的密码 会让密码框变红 那么首先我们先来编写一个css样式:
+                .illegal.pwd{
+                    border: red 1px solid !important;
+                    box-shadow: 0 0 5px red;
+                }
+接着我们来编写一下js代码 定义一个函数 此函数接收一个参数(元素本身的对象) 检测输入的长度是否大于6 否则就将当前元素的class属性设定为css指定的class:
+                function checkIllegal(e) {
+                    if (e.value.length < 6) {
+                        e.setAttribute("class", "illegal.pwd")
+                    } else {
+                        e.removeAttribute("class")
+                    }
+                }
+最后我们将此函数绑定到oninput事件即可 注意: 传入了一个this 这里的this代表的是输入框元素本身:
+                <input type="password" placeholder="密码" oninput="checkIllegal(this)">
+现在我们在输入的时候 会自动检查密码是否合法
+
+既然oninput本身也是一个属性 那么实际上我们可以动态进行修改:
+                document.getElementById("pwd").oninput = () => console.info("???")
+
+那么 我们前面提及的window对象又是什么东西呢
+
+实际上window对象访问更加广阔 它甚至直接代表了整个窗口 当然也包括我们的Document对象 我们一般通过window对象来弹出提示框之类的东西

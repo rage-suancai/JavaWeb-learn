@@ -1,0 +1,8 @@
+7月 05, 2022 1:20:49 下午 JUnit.junit2.Test test5
+严重: 我是出现严重错误日志
+java.io.IOException: 我就是错误
+	at JUnit.junit2.Test.test5(Test.java:113)
+	at JUnit.junit2.Test.main(Test.java:127)
+
+7月 05, 2022 1:20:49 下午 JUnit.junit2.Test test5
+警告: 警告的内容
