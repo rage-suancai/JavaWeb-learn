@@ -5,12 +5,15 @@
 触发器所依赖的表称为基本表 当触发器表上发生select/update/delete等操作时 会自动生成两个临时的表(new表和old表 只能由触发器使用)
 
 比如: 在insert操作时 新的内容会被插入到new表中 在delete操作时 旧的内容会被移到old表中 我们仍可在拿到被删除的数据 在update操作时 旧的内容会被移到old表中 新的内容会出现在new表中
+
                     create trigger 触发器名称 [before|after] [insert|update|delete] on 表名/视图名 for each row delete from student where student.son = new.sno;
 
 for each row表示针对每一行都会生效 无论哪行进行指定操作都会执行触发器
 
 通过下面的命令来查看触发器:
+
                     show triggers;
 
 如果不需要 我们就可以删除此触发器:
+
                     drop trigger 触发器名称;

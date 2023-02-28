@@ -14,6 +14,7 @@ import lombok.ToString;
 //@ToString(doNotUseGetters = true) // 避免默认先执行get方法
 //@ToString(onlyExplicitlyIncluded = true) // 返回一个Student()
 public class Student {
+
     @ToString.Include(rank = 2, name = "学号")
     Integer sid;
     //@ToString.Exclude // 指定排除的字段

@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class MybatisUtil {
+
     // 由于SqlSessionFactory一般只需要创建一次 因此我们可以创建一个工具类来集中创建SqlSession 这样会更加方便一些
     private static SqlSessionFactory sqlSessionFactory;
     static {
@@ -26,4 +27,5 @@ public class MybatisUtil {
     public static SqlSession getSession(boolean autoCommit) {
         return sqlSessionFactory.openSession(autoCommit);
     }
+
 }

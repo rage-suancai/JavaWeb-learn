@@ -6,12 +6,14 @@ import org.apache.ibatis.session.SqlSession;
 /**
  * Maven依赖的作用域
  * 除了三个基本的属性用于定位坐标外 依赖还可以添加以下属性:
+ *
  *      > type 依赖的功能 对于项目坐标定义的packaging 大部分情况下 该元素不必声明 其默认值为jar
  *      > scope 依赖的范围(作用域 着重讲解)
  *      > optional 标记依赖是否可选
  *      > exclusions 用来排除传递性依赖(一个项目有可能依赖于其他项目 就像我们的项目 如果别人要用我们的项目作为依赖 那么 就需要一起下载我们项目的依赖 如Lombok)
  *
  * 我们着重讲解一下scope属性 它决定了依赖的作用域范围:
+ *
  *      > compile 为默认的依赖有效范围 如果在定义依赖关系的时后 没有明确指定依赖有效范围的话 则默认采用该依赖有效范围
  *                此种依赖 在编译 运行 测试时均有生效
  *      > provided 在编译 测试时有效 但是在运行时无效 也就是说项目在运行时 不需要此依赖比如我们声上面的Lombok 我们只需要在编译阶段使用它
@@ -21,13 +23,16 @@ import org.apache.ibatis.session.SqlSession;
  *      > test 只在测试时有效 例如 JUnit 我们一般只会在测试阶段使用JUnit 而实际项目运行时 我们就用不到测试了 那么我们来看看 导入JUnit的依赖
  *
  * 同样的 我们可以在网站上搜索JUnit的依赖 我们这里导入最新的JUnit5作为依赖:
+ *
  *                  <dependency>
  *                      <groupId>org.junit.jupiter</groupId>
  *                      <artifactId>junit-jupiter</artifactId>
  *                      <version>5.8.1</version>
  *                      <scope>test</scope>
  *                  </dependency>
+ *
  * 我们所有的测试用例全部编写到Maven项目给我们划分的test目录下 位于此目录下的内容不会在最后被打包到项目中 只用作开发阶段测试使用:
+ *
  *                  @Test
  *                  public void test1(){
  *                      log.info("测试");
@@ -35,7 +40,9 @@ import org.apache.ibatis.session.SqlSession;
  *                      // Assert在Junit5时名称发生了变化Assertions
  *                      Assertions.assertArrayEquals(new int[]{1, 2, 3}, new int[]{1, 2});
  *                  }
+ *
  * 因此 一般仅用作测试的依赖如JUnit只保留在测试中即可 那么现在我们再来添加JDBC和Mybatis的依赖:
+ *
  *                  <dependency>
  *                      <groupId>mysql</groupId>
  *                      <artifactId>mysql-connector-java</artifactId>
@@ -46,9 +53,11 @@ import org.apache.ibatis.session.SqlSession;
  *                      <artifactId>mybatis</artifactId>
  *                      <version>3.5.7</version>
  *                  </dependency>
+ *
  * 我们发现 Maven还给我们提供了一个resource文件夹 我们可以将一些静态资源 比如配置文件 放入到这个文件夹中 项目在打包时会将资源文件夹中文件一起打包到Jar中
  *
  * 现在我们创建一下测试用例 顺便带大家了解一下JUnit5的一些比较方便的地方:
+ *
  *                  // 因为配置文件位于内部 我们需要使用Resources类的getResourceAsString来获取内部的资源文件
  *                  private static SqlSessionFactory factory;
  *
@@ -73,6 +82,7 @@ import org.apache.ibatis.session.SqlSession;
  *
  * 那么就有人问了 如果我需要的依赖没有上传的远程仓库 而是只有一个jar怎么办呢 我们可以使用第四种作用域:
  *      > system 作用域和provided是一样的 但是它不是从远程仓库获取 而是直接导入本地jar包:
+ *
  *                  <dependency>
  *                      <groupId>javax.jntm</groupId>
  *                      <artifactId>yxsnb</artifactId>
@@ -80,6 +90,7 @@ import org.apache.ibatis.session.SqlSession;
  *                      <scope>system</scope>
  *                      <systemPath>D://xxxx/xxxx/test.jar</systemPath>
  *                  </dependency>
+ *
  * 比如上面的例子 如果scope为system 那么我们需要添加systemPath来指定jar文件的位置 这里就不再演示了
  */
 public class Test {

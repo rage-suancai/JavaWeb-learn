@@ -1,59 +1,65 @@
 package JDBC.jdbc7;
 
 import java.sql.*;
+import java.util.Scanner;
 
 /**
- * jdbc管理事务
- * jdbc默认的事务处理行为是自动提交 所以前面我们执行一个sql语句就会被直接提交(相当于没有启动事务)
- * 所以jdbc需要进行事务管理时 首先要通过Connection对象调用setAutoCommit(false)方法 将sql语句的提交(commit)由驱动程序转交给应用程序负责
+ * 使用PreparedStatement
+ * 我们发现 如果单纯地使用Statement来执行SQL命令 会存在严重的SQL注入攻击漏洞 而这种问题 我们可以使用PreparedStatement来解决:
  *
- *      con.setAutoCommit(); // 关闭自动提交后相当与开启事务
- *      // sql语句
- *      // sql语句
- *      // sql语句
- *      con.commit(); 或 con.rollback();
+ *                  public static void main(String[] args) {
+ *
+ *                      try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "1234456");
+ *                          PreparedStatement pst = conn.prepareStatement("select * from user where username=? and pwd=?;");
+ *                          Scanner sc = new Scanner(System.in)) {
+ *
+ *                          pst.setString(1, sc.nextLine());
+ *                          pst.setString(2, sc.nextLine());
+ *                          System.out.println(pst); // 打印查看一下最终执行的
+ *                          ResultSet res = pst.executeQuery();
+ *                          while (res.next()) {
+ *                              String username = res.getString(1);
+ *                              System.out.println(username + " 登录成功");
+ *                          }
+ *                      } catch (SQLException e) {
+ *                          e.printStackTrace();
+ *                      }
+ *
+ *                  }
+ *
+ * 我们发现 我们需要提前给到PreparedStatement一个SQL语句 并且使用?作为占位符 它会预编译一个SQL语句
+ * 通过直接将我们的内容进行替换的方式来填写数据 使用这种方式 我们之前的例子就失效了 我们来看看实际执行的SQL语句是什么:
+ *
+ *                  com.mysql.cj.jdbc.ClientPreparedStatement: select * from user where username= 'Test' and pwd='123456'' or 1=1; -- ';
+ *
+ * 我们发现 我们输入的参数一旦出现 ' 时 会被变成转义形式 \' 而最外层有一个真正的 ' 来将我们输入的内容进行包裹 因此它能够有效地防止SQL注入攻击
  */
 public class Test {
 
-    public static void main(String[] args) {
-        /**
-         * 一旦关闭自动提交 那么现在执行所有的操作如果在最后不进行commit()来提交事务的话 那么所有的操作都会丢失 只有提交之后 所有的操作才会被保存 也可以使用rollback来手动回滚之前的全部操作
-         */
-        /*try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/study", "root", "123456");
-             Statement statement = connection.createStatement()){
-            connection.setAutoCommit(false); // 关闭自动提交 现在变为我们手动提交
+    static void test1() {
 
-            statement.executeUpdate("insert into user values ('a', 1234)");
-            statement.executeUpdate("insert into user values ('b', 1234)");
-            statement.executeUpdate("insert into user values ('c', 1234)");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "1234456");
+             PreparedStatement pst = conn.prepareStatement("select * from user where username= ? and pwd=?;");
+             Scanner sc = new Scanner(System.in)){
 
-            connection.rollback(); // 回滚 撤销前面的全部操作
-            statement.executeUpdate("insert into user values ('c', 1234)");
-            connection.commit(); // 如果前面任何操作出现异常 将不会执行commit() 之前的操作也就不会生效
-
-        } catch (SQLException e){
-            e.printStackTrace();
-        }*/
-
-        /**
-         * 同样的 我们也可以去创建一个回滚点来实现定点回滚
-         */
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/study", "root", "123456");
-             Statement statement = connection.createStatement()){
-            connection.setAutoCommit(false);
-
-            statement.executeUpdate("insert into user values ('a', 1234)");
-
-            Savepoint savepoint = connection.setSavepoint(); // 创建回滚点
-            statement.executeUpdate("insert into user values ('b', 1234)");
-            statement.executeUpdate("insert into user values ('c', 1234)");
-
-            connection.rollback(savepoint); // 回滚到回滚点 撤销前面全部操作
-            connection.commit();
-
-        } catch (SQLException e){
+             pst.setString(1, sc.nextLine());
+             pst.setString(2, sc.nextLine());
+             System.out.println(pst); // 打印查看一下最终执行的
+             ResultSet res = pst.executeQuery();
+             while (res.next()){
+                 String username = res.getString(1);
+                 System.out.println(username+" 登陆成功");
+             }
+        }catch (SQLException e){
             e.printStackTrace();
         }
+
+    }
+
+    public static void main(String[] args) {
+
+
+
     }
 
 }

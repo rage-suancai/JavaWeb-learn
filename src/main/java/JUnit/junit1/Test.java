@@ -15,7 +15,9 @@ package JUnit.junit1;
  * 首先需要导入JUnit依赖 我们在这里使用JUnit4进行介绍 最新的JUnit5放到Maven板块一起讲解 jar包官网下载即可 同时IDEA需要安装Junit插件(默认已经安装)
  */
 public class Test {
+
     public static void main(String[] args) {
 
     }
+
 }

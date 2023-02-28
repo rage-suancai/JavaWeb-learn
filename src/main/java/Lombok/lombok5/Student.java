@@ -16,8 +16,10 @@ import lombok.RequiredArgsConstructor;
 //@Data // 包含以上所有东西
 @Data(staticConstructor = "create")
 public class Student {
+
     //final Integer sid;
     Integer sid;
     String name;
     String sex;
+
 }

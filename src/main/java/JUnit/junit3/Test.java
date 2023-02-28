@@ -10,9 +10,12 @@ import java.util.Properties;
  * Properties配置文件
  * Properties文件是java的一种配置文件 我们之前学习了XML 但是我们只发现XML配置文件读取实在是太麻烦
  * 那么能否有一种简单的配置文件呢 我们可以使用Properties文件:
+ *
  *          name=Test
  *          desc=Description
+ *
  * 该文件配置很简单 格式为配置项=配置值 我们可以直接通过Properties类来将其读取为一个类似于Map一样的对象:
+ *
  *          Properties properties = new Properties();
  *          properties.load(new FileInputStream("test.properties"));
  *          System.out.println(properties);
@@ -21,6 +24,7 @@ import java.util.Properties;
  * 它会把所有的配置项映射为一个Map 这样我们就可以快速地读取对应配置的值了
  *
  * 我们也可以将已经存在的Properties对象放入输出流进行保存 我们这里就不保存文件了 而是直接打印到控制台 我们只需要提供输出流即可:
+ *
  *          Properties properties = new Properties();
  *          properties.setProperty("test", "nb");
  *          properties.put("yxs", "nb");
@@ -28,6 +32,7 @@ import java.util.Properties;
  *          properties.storeToXML(System.out, "????");
  *
  * 我们可以通过System.getProperties()获取系统的参数 我们来看看:
+ *
  *          System.getProperties().store(System.out, "系统信息");
  *          System.getProperties().forEach((k, v)-> System.out.println(k + ":" + v));
  */

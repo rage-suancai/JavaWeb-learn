@@ -1,23 +1,30 @@
 JavaScript数组和对象
 js中的数组定义与java不同 它更像是Python中的列表 数组中的每个元素并不需要时同样的类型:
+
                 let arr = [1, "yxsnb", false, undefined, NaN]
+
 我们可以直接使用下标来访问:
+
                 let arr = [1, "yxsnb", false, undefined, NaN]
                 console.info(arr[1])
 
 我们一开始编写的排序算法 也是使用了数组
 
 数组还可以动态扩展 如果我们尝试访问超出数组长度的元素 并不会出现错误 而是得到undefined 同样的我们也可以直接往超出数组长度的地方设置元素:
+
                 let arr = [1, "yxsnb", false, undefined, NaN]
                 arr[5] = "???"
                 console.info(arr)
 
 也可以使用push和pop来实现栈操作:
+
                 let arr = [1, "yxsnb", false, undefined, NaN]
                 arr.push("bbb")
                 console.info(arr.pop())
                 console.info(arr)
+
 数组还包括了一些其他方法 这里就不一一列出了:
+
                 let arr = [1, "yxsnb", false, undefined, NaN]
                 arr.fill(1)
                 console.info(arr.map( o -> {
@@ -25,15 +32,20 @@ js中的数组定义与java不同 它更像是Python中的列表 数组中的每
                 }))
 
 我们接着来看对象 js中也能定义对象 但是这里的对象有点颠覆我们的认知:
+
                 let obj = new Object()
                 let obj = {}
+
 以上两种写法都能创建一个对象 但是更推荐下面的一种
 
 js中的对象也是非常随意的 我们可以动态为其添加属性:
+
                 let obj = {}
                 obj.name = "伞兵一号"
                 console.info(obj)
+
 同理 我们也可以给对象动态添加一个函数:
+
                 let obj = {}
                 obj.f = function (){
                     console,info("我是对象内部的函数")
@@ -42,6 +54,7 @@ js中的对象也是非常随意的 我们可以动态为其添加属性:
                 obj.f()
 
 我们可以在函数你使用this关键字来指定对象内的属性:
+
                 let name = "我是外部变量"
                 let obj = {}
                 obj.name = "我是内部变量"
@@ -50,9 +63,11 @@ js中的对象也是非常随意的 我们可以动态为其添加属性:
                 }
 
                 obj.f()
+
 注意: 如果使用lambda表达式 那么this并不会指向对象
 
 除了动态添加属性 我们也可以在一开始的时候指定对象内部的成员:
+
                 let obj = {
                     name = "我是内部的变量",
                     f: function (){
@@ -62,4 +77,5 @@ js中的对象也是非常随意的 我们可以动态为其添加属性:
                 }
 
                 obj.f()
+
 注意: 如果有多行属性 需要在属性定义后添加一个, 进行分割

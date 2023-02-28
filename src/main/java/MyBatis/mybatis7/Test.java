@@ -13,22 +13,27 @@ import org.apache.ibatis.session.SqlSession;
  * 因此Mybatis内置了一个缓存机制 我们查询结果时 如果缓存中存在数据 那么我们就可以直接从缓存中获取 而不是再去向数据库进行请求
  *
  * Mybatis存在一级缓存和二级缓存 我们首先来看一下一级缓存 默认情况下 只启用了本地的会话缓存 它仅仅对一个会话中的数据进行缓存(一级缓存无法关闭 只能调整) 我们来看看下面这段代码:
+ *
  *      try (SqlSession session = MybatisUtil.geSession(true)) {
  *          TestMapper mapper = session.getMapper(TestMapper.class);
  *          Student student1 = testMapper.getStudentBySid(1);
  *          Student student2 = testMapper.getStudentBySid(2);
  *          System.out.println(student1 == student2);
  *      }
+ *
  * 我们发现 两次得到的都是同一个Student对象 也就是说我们第二次查询并没有重新去构造对象 而是直接得到之前创建好的对象 如果还不是很明显 我们可以修改一下实体类:
+ *
  *      public Student(){
  *         System.out.println("我被构造了");
  *     }
+ *
  * 我们通过前面的学习得知Mybatis再映射为对象时 在只有一个构造方法的情况下 无论你构造方法写成什么样 都会去调用一次构造方法
  * 如果存在多个构造方法 那么就会去找匹配的构造方法 我们可以通过查看构造方法来验证对象被创建了几次
  *
  * 结果显而易见 只创建了一次 也就是说当第二次进行同样的查询时 会直接使用第一次的结果 因此第一次的结果已经被缓存了
  *
  * 那么如果我们修改了数据库中的内容 缓存还会生效吗:
+ *
  *      try (SqlSession Session = MybatisUtil.getSession(true)) {
  *          TestMapper mapper = session.getMapper(TestMapper.class);
  *          Student student1 = mapper.getStudentBySid(1);
@@ -36,6 +41,7 @@ import org.apache.ibatis.session.SqlSession;
  *          Student student2 = mapper.getStudentBySid(1);
  *          System.out.println(student1 == student2);
  *      }
+ *
  * 我们发现 当我们进行了插入操作后 缓存就没有生效了 我们再次进行查询得到的是一个新创建的对象
  *
  * 也就是说 一级缓存 在进行DML操作后 会使得缓存失败 也就是说Mybatis知道我们对数据库里面的数据进行了修改 所有之前缓存的内容可能就不是当前数据库里面最新的内容了

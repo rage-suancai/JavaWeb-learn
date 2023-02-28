@@ -12,18 +12,23 @@ import java.lang.reflect.Proxy;
  * 我们只告诉老板卖多少钱 而至于怎么卖的是由水果摊老板决定的
  *
  * 那么现在我们来尝试实现一下这样的类结构 首先定义一个接口用于规范行为:
+ *
  *      public interface Shopper {
  *          // 卖瓜行为
  *          void saleWatermelon(String customer);
  *      }
+ *
  * 然后需要实现一下卖瓜行为 也就是我们要告诉老板卖多少钱 这里就直接写成成功出售:
+ *
  *      public class ShopperImpl implements Shopper {
  *          @Override
  *          public void saleWatermelon(String customer) {
  *              System.out.println("成功出售西瓜给 ===>" + customer);
  *          }
  *      }
+ *
  * 最后老板代理后肯定要用自己的方式去出售这些西瓜 成交之后再按照我们告诉老板的价格进行出售:
+ *
  *      private final Shopper impl;
  *
  *     public ShopperProxy(Shopper impl) {
@@ -42,15 +47,19 @@ import java.lang.reflect.Proxy;
  *
  *         impl.saleWatermelon(customer); // 讨价还价成功 进行我们告诉代理商的卖瓜行为
  *     }
+ *
  * 现在我们来试试看:
+ *
  *      public static void main(String[] args) {
  *           Shopper impl = new ShopperImpl();
  *           Shopper proxy = new ShopperProxy((impl));
  *           proxy.saleWatermelon("小吵闹");
  *      }
+ *
  * 这样的操作称为静态代理 也就是我们需要提前知道接口的定义并进行实现才可以完成代理 而Mybatis这样的是无法预知代理接口的 我们就需要用到动态代理
  *
- * JDK提供的反射框架就为我们很好地解决了动态代理的问题 在这里相当于对javaSE阶段反射的内容进行一个补充
+ * JDK提供的反射框架就为我们很好地解决了动态代理的问题 在这里相当于对javaSE阶段反射的内容进行一个补充:
+ *
  *      Object target;
  *      public ShopperProxy(Object target) {
  *          this.target = target;
@@ -66,7 +75,9 @@ import java.lang.reflect.Proxy;
  *          System.out.println(customer + ": 给我挑一个");
  *          return method.invoke(target, args);
  *      }
+ *
  * 通过实现InvocationHandler来成为一个动态代理 我们发现它提供了一个invoke方法 用于调用被代理对象的方法并完成我们的代理工作 现在就可以通过Proxy.newProxyInstance来生成一个动态代理类:
+ *
  *      public static void main(String[] args) {
  *          Shopper impl = new ShopperImpl();
  *          Shopper shopper = (Shopper) Proxy.newProxyInstance(impl.getClass().getClassLoader(),
@@ -77,6 +88,7 @@ import java.lang.reflect.Proxy;
  *
  * 通过打印类型我们发现 就是我们之前看到的那种奇怪的类: class com.sun.proxy.$Proxy0 因此Mybatis其实也是这样的来实现的(肯定有人问了: Mybatis是直接代理接口啊 你这个还不是要把接口实现了吗)
  * 那我们来改改 现在我们不代理任何类了 直接做接口实现:
+ *
  *     @Override
  *     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
  *         String customer = (String) args[0];
@@ -94,6 +106,7 @@ import java.lang.reflect.Proxy;
  *         shopper.saleWatermelon("小吵闹");
  *         System.out.println(shopper.getClass());
  *     }
+ *
  * 我们可以去看看Mybatis的源码
  *
  * Mybatis的学习差不多到这里为止了 不过同样类型的框架还有很多 Mybatis属于半自动框架 SQL语句依然需要我们自己编写 虽然存在一定的麻烦 但是会更加灵活

@@ -3,7 +3,8 @@ package JUnit.junit2.proxy;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-public class ShopperProxy implements InvocationHandler {
+public class
+ShopperProxy implements InvocationHandler {
 
     /*private final Shopper impl;
 

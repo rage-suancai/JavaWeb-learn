@@ -9,12 +9,14 @@ import java.util.logging.Logger;
 /**
  * 编写日志配置文件
  * 我们可以通过进行配置文件来规定日志打印器的一些默认值:
+ *
  *          # RootLogger 的默认处理器为
  *          handlers = java.util.logging.ConsoleHandler
  *          # RootLogger 的默认的日志级别
  *          .level = WARNING
  *
  * 我们来尝试使用配置文件来进行配置:
+ *
  *          LogManager manager = LogManager.getLogManager();
  *          manager.readConfiguration(new FileInputStream("test.properties"));
  *
@@ -22,6 +24,7 @@ import java.util.logging.Logger;
  *          logger.log(Level.INFO, "我是普通日志消息");
  *
  * 我们也可以去修改ConsoleHandler的默认配置:
+ *
  *          # 指定默认日志级别
  *          java.util.logging.ConsoleHandler.level = ALL
  *          # 指定默认日志消息格式

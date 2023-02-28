@@ -5,6 +5,7 @@ import MyBatis.mybatis4.entity.Student;
 import java.util.List;
 
 public interface TestMapper {
+
     List<Student> selectStudent();
 
     Student getStudentById(int id);

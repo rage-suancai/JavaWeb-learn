@@ -6,6 +6,7 @@ sql语句不区分大小写(关键字推荐使用大写) 它支持多行 并且�
 sql也支持注释 通过使用--或是#来编写注释内容 也可以使用/*来进行多行注释
 
 我们要学习的就是以下四种类的sql语句
+
      > 数据查询语言(Data Query Language DQL) 基本结构是由SELECT子句 WHERE子句组成的查询块
      > 数据操纵语言(data Manipulation Language DML) 是sql语言中 负责对数据库对象运行数据访问工作的指令集 以INSERT UPDATE DELETE三种指令为核心 分别代表插入 更新与删除 是开发以数据为中心的应用程序必定会使用到的指令
      > 数据库定义语言DDL(Data Definition Language) 是用于描述数据库中要存储的现实世界实体的语言
@@ -16,16 +17,20 @@ sql也支持注释 通过使用--或是#来编写注释内容 也可以使用/*�
 数据库定义语言(DDL)
 数据库操作
 我们可以通过create database来创建一个数据库:
+
                     create database 数据库名;
 
 为了能够支持中文 我们在创建时可以设定编码格式:
+
                     create database if not exists 数据库名 default charset utf8 collate utf8_general_ci;
 
 如果我们创建错误了 我们可以将此数据库删除 通过使用drop database来删除一个数据库:
+
                     drop database 数据库名;
 
 创建表
 数据库创建完成后 我们一般通过create table语句来创建一张表:
+
                     create table 表名(列名 数据类型[列级约束条件],
                                  列名 数据类型[列级约束条件],
                                  ...
